@@ -3,87 +3,78 @@
 html {
   font: calc(100% * 0.625) / 1.15 HelveticaNeue, Helvetica, sans-serif;
 }
-
 body {
   font-size: 1.8rem; line-height: 1.875;
-  color: #252525;margin: 0;
+  margin: 0;
 }
-
-header {
-  background-color: #252525d2;
-  color: #fff; 
-  padding: 2rem;
-}
-
-header> h1,
+/*
+nav> h1,
 main {
   width: 95%;
   max-width: 120rem;
   margin: 0 auto;
-}
-main {
+*/
+nav {
+  background-color: rgb(82, 106, 122);
+  padding: 2rem;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
+  align-items: center;
+}
+.home {
+  font-size: 50px;
+  font-weight: bold;
+}
+.home:hover {
+  color: yellow;
+}
+.route {
+  text-align: center;
+  padding: 10px;
+  background-color: orange;
+  font-weight: bold;
+  width: 200px;
+  margin-left: 20px;
+}
+.route:hover {
+  background-color: rgb(171, 235, 108);
 }
 
-.folder_list {
-  width: 40%;
+.main {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 20px; 
 }
 
 a, a:visited, a:hover, a:active {
   color: inherit;
-}
-
-a {
   text-decoration: none; 
 }
-.folder_list a {
-  margin-bottom: 10px;
-  padding: 10px;
-  border-style: solid;
-  border-color: gray;
-}
-.folder_list a:hover {
-  border-color: rgb(169, 211, 105);
-}
-.folder_list button, .noteList button {
-  padding: 10px;
-}
-.folder_list button:hover, .noteList button:hover {
-  cursor: pointer;
-  background-color:rgb(169, 211, 105);
-  color: #fff;
-}
+
 .noteList {
   width: 55%;
-  display: flex; flex-direction: column;
-  margin-right: 20px;
+   margin: auto 15px auto 0
 }
-.note {
-  border-style: solid;
-  border-color: gray;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-.note:hover {
-  cursor: pointer;
-  border-color: red;
-}
-.note h3 {
-  margin: 0;
-}
-.note button {
-  margin-left: 80px;
-  padding: 5px;
-}
-.note button:hover {
-  cursor: pointer;
-  background-color: tomato;
-  color: white;
+.note_list {
+  overflow: auto;
+  max-height: 380px; 
 }
 
-
+.icon:hover {
+  cursor: pointer;
+  color: red;
+}
+.back {
+  font-size: 80px;
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  align-items: center;
+}
+.promiseError{
+  color: red;
+  text-align: center;
+  margin-top: 50px;
+  font-weight: bold;
+}
