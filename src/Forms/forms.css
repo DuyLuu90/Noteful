@@ -1,0 +1,46 @@
+form {
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    padding: 10px;
+    width: 70%;
+}
+
+form h3{
+    text-align: center;
+} 
+
+.form_data, .form_control {
+    display: flex;
+    padding: 10px;
+    /* margin-bottom: 10px; */
+}
+.form_control {
+    justify-content: space-evenly;
+}
+.form_control button {
+    padding: 10px;
+    font-weight: bold;
+}
+.form_control button:hover {
+    background-color: palegreen;
+}
+.save:disabled {
+    color:white;
+}
+label {
+    width: 25%;
+}
+
+input, select, textarea {
+    width: 65%;
+}
+textarea {
+    height: 100px
+}
+.error {
+    color: red;
+    margin-top: 0;
+    margin-left: 150px
+}
