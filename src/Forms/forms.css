@@ -11,19 +11,24 @@ form h3{
     text-align: center;
 } 
 
+input, select, textarea {
+    width: 65%;
+}
+textarea {
+    height: 100px
+}
+
 .form_data, .form_control {
     display: flex;
     padding: 10px;
     /* margin-bottom: 10px; */
 }
-.form_control {
-    justify-content: space-evenly;
-}
-.form_control button {
+
+.form_control input {
     padding: 10px;
     font-weight: bold;
 }
-.form_control button:hover {
+.form_control input:hover {
     background-color: palegreen;
 }
 .save:disabled {
@@ -33,12 +38,6 @@ label {
     width: 25%;
 }
 
-input, select, textarea {
-    width: 65%;
-}
-textarea {
-    height: 100px
-}
 .error {
     color: red;
     margin-top: 0;
