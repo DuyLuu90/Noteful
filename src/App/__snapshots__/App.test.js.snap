@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Component Snapshot test-Prevent unexpected change 1`] = `
+<div
+  className="App"
+>
+  <nav>
+    <a
+      className="home"
+      href="/"
+      onClick={[Function]}
+    >
+      Noteful
+    </a>
+    <div>
+      <a
+        className="route"
+        href="/updateFolder"
+        onClick={[Function]}
+      >
+        Add new folder
+      </a>
+      <a
+        className="route"
+        href="/updateNote"
+        onClick={[Function]}
+      >
+        Add new note
+      </a>
+    </div>
+  </nav>
+  <main>
+    <div
+      className="main"
+    >
+      <div
+        className="folder_list"
+      >
+        <header>
+          <div
+            className="title"
+          >
+            Folder List
+          </div>
+          <div
+            className="counter"
+          >
+            <div
+              className="count"
+            >
+              0
+            </div>
+            <a
+              className="add"
+              href="/updateFolder"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-plus fa-w-14 "
+                data-icon="plus"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </a>
+          </div>
+        </header>
+      </div>
+      <div
+        className="noteList"
+      >
+        <header>
+          <div
+            className="title"
+          >
+            All Notes
+          </div>
+          <div
+            className="counter"
+          >
+            <div
+              className="count"
+            >
+              0
+            </div>
+            <a
+              className="add"
+              href="/updateNote"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-plus fa-w-14 "
+                data-icon="plus"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </a>
+          </div>
+        </header>
+        <div
+          className="note_list"
+        />
+      </div>
+    </div>
+  </main>
+</div>
+`;
