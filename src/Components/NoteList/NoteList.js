@@ -1,28 +1,96 @@
-import React from 'react'
-import NoteBox from './NoteBox' 
+import React, {Component} from 'react'
+import {NoteBox,FolderList} from '../Utils/utils'
 import {Link} from 'react-router-dom'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlus } from '@fortawesome/free-solid-svg-icons'
+import {faPlus, faBars } from '@fortawesome/free-solid-svg-icons'
 
-function NoteList(props) {
-    return (  
-        <div className='noteList'>
-            <header>
-                <div className='title'>
-                    {props.title}
+import '../Components.css'
+import {NotefulApiServices} from '../../service/api-service'
+
+export default class NoteList extends Component {
+    static defaultProps={
+        match: {params:{}},
+        notes: [],
+        folders:[]
+    }
+    state= {
+        title: 'All Notes',
+        notes: this.props.notes,
+        folders:this.props.folders, 
+        displayNav: false,
+    }
+    /*
+    componentDidMount(){
+        NotefulApiServices.getAllItems('folders').then(json=>this.setState({folders:json}))
+        NotefulApiServices.getAllItems('notes').then(json=>this.setState({notes:json}))
+    }*/
+    displayNav= ()=> {
+        const boolean= (this.state.displayNav)? false: true
+        this.setState({displayNav: boolean})
+    }
+    openFolder=(id)=>{
+        const folder= this.state.folders.find(folder=>folder.id===id)
+        NotefulApiServices.getAllItems('notes').then(json=>{
+            const notes= json.filter(note=>note.folderid===id)
+            this.setState({notes: notes, title: folder.name, displayNav: false})
+        })
+    }
+    displayAll=()=>{
+        NotefulApiServices.getAllItems('notes').then(json=>{
+            this.setState({
+                notes:json, title:'All Notes', displayNav:false,
+            })
+        })
+    }
+    renderNav(){
+        return(
+        <div className='mainNav'>
+            <div>
+                <div className='mainNav_control'>
+                    <span><FontAwesomeIcon icon={faBars} onClick={this.displayNav}/></span>
+                    <span className='count'>{this.state.folders.length}</span>
+                    <span className='add'>
+                        <Link to={`/forms/folder`} ><FontAwesomeIcon icon={faPlus}/></Link>
+                    </span>
                 </div>
-                <div className='counter'>
-                    <div className='count'>{props.notes.length}</div>
-                    <Link to={`/updateNote`} className='add'><FontAwesomeIcon icon={faPlus}/></Link>
-                </div>  
-            </header> 
-            <div className='note_list'>
-                {props.notes.map(note=>(<NoteBox note={note} key={note.id}/> ))} 
-            </div>       
-        </div> )          
+                <span className='mainNav_title'>{this.state.title}</span>
+            </div>
+            <div>
+                <span className='mainNav_title'>Total:</span>
+                <div className='mainNav_control'>
+                    <span className='count'>{this.state.notes.length}</span>
+                    <span className='add'>
+                        <Link to={`/forms/note`} className='add'>
+                            <FontAwesomeIcon icon={faPlus}/>
+                        </Link>
+                    </span>
+                </div>
+            </div>  
+        </div>
+        )
+    }
+    
+    renderNotes(){
+        const {notes}= this.state
+        return(
+            <div className='noteList'>
+                {notes.map((note,index)=><NoteBox {...this.props} key={index} note={note}/>)}
+            </div>
+        )
+    }
+    render(){
+        const notes= this.renderNotes()
+        const nav= this.renderNav()
+        return(
+            <div>
+                {nav}
+                <div className='main'>
+                    {this.state.displayNav && 
+                        <FolderList displayAll={this.displayAll}
+                        folders={this.state.folders} openFolder={this.openFolder}/>}
+                    {notes}
+                </div>
+            </div>
+        )
+    }
 }
-NoteList.defaultProps = {
-    title: '',
-    notes: []
-}
-export default NoteList;

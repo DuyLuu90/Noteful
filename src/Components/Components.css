@@ -1,8 +1,3 @@
-.folder_list {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-}
 header{
     font-size: 30px;
     color: white;
@@ -14,14 +9,24 @@ header{
 .title {
     padding-left: 10px;
 }
-.counter {
-    min-width: 100px;
+.mainNav{
+    padding: 0px;
+    background-color: rgb(4, 4, 88);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+.mainNav div {
+    display: flex;
+}
+.mainNav_title {
+    margin: 0px 10px;
 }
 
-.count, .add {
-    display: inline-block;
-    width: 50%;
-    text-align: center;   
+.mainNav_control span {
+    width: 40px;
+    cursor: pointer;
 }
 .count {
     background-color: red;
@@ -36,7 +41,20 @@ header{
     cursor: pointer;
     background-color: rgb(171, 235, 108);
 }
-
+.noteList {
+    width: 60%;
+    margin: 25px auto;
+}
+.errorMessage {
+    color: red;
+    font-weight: bold;
+}
+/*
+.folder_list {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
 .folderBox , .noteBox {
     margin-bottom: 10px;
     padding: 10px;
@@ -59,7 +77,6 @@ header{
     font-size: 30px;
     font-weight: bold;
 }
-
 .noteBox h3 {
     margin: 0;
 }
@@ -68,9 +85,6 @@ header{
     justify-content: space-between;
     align-items: center;
 }
+*/
 
-.errorMessage {
-    color: red;
-    font-weight: bold;
-}
   

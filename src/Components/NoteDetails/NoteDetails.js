@@ -2,10 +2,10 @@ import React from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import NoteBox from '../Components/NoteList/NoteBox'
-import NoteContext from '../NoteContext'
-import ErrorBoundary from '../Components/Misc/ErrorBoundary'
+import NoteContext from '../../NoteContext'
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
 
-export default function NoteContent(props) {
+export default function NoteDetails(props) {
     return (
         <NoteContext.Consumer>
             {value=>{
@@ -16,7 +16,7 @@ export default function NoteContent(props) {
                         <h3 className='back'onClick={()=>props.history.goBack()}>
                             <FontAwesomeIcon icon={faArrowAltCircleLeft} className='icon'/>
                         </h3>
-                        <div className='noteList'>
+                        <div className='note_details'>
                             <ErrorBoundary>
                                 {note.name && <NoteBox note={note}/>}
                                 <div className='content'>

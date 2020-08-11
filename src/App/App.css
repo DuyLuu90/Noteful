@@ -7,19 +7,16 @@ body {
   font-size: 1.8rem; line-height: 1.875;
   margin: 0;
 }
-/*
-nav> h1,
-main {
-  width: 95%;
-  max-width: 120rem;
-  margin: 0 auto;
-*/
+
 nav {
   background-color: rgb(82, 106, 122);
-  padding: 2rem;
-  display: flex;
-  justify-content: space-between;
+  padding: 10px;
+  display: flex; justify-content: space-between;
   align-items: center;
+  height: 100px
+}
+nav h1 {
+  margin: 0px;
 }
 .home {
   font-size: 50px;
@@ -38,13 +35,11 @@ nav {
 }
 .route:hover {
   background-color: rgb(171, 235, 108);
+  cursor: pointer;
 }
 
 .main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  margin-top: 20px; 
+  position: relative;
 }
 
 a, a:visited, a:hover, a:active {
@@ -52,19 +47,13 @@ a, a:visited, a:hover, a:active {
   text-decoration: none; 
 }
 
-.noteList {
-  width: 55%;
-   margin: auto 15px auto 0
-}
-.note_list {
-  overflow: auto;
-  max-height: 380px; 
-}
-
 .icon:hover {
   cursor: pointer;
   color: red;
 }
+
+/*
+
 .back {
   font-size: 80px;
   display: flex;
@@ -78,3 +67,4 @@ a, a:visited, a:hover, a:active {
   margin-top: 50px;
   font-weight: bold;
 }
+*/

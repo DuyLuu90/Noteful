@@ -1,9 +1,10 @@
 import React from 'react';
-import ValidationError from '../ValidationError'
-import NoteContext from '../../NoteContext';
+//import ValidationError from './ValidationError'
+import {ValidationError} from '../Utils/utils'
+import NoteContext from '../../Context/NoteContext';
 import PropTypes from 'prop-types'
-import {randomId, validateName,validateId, getFolderName} from '../../functions'
-import '../forms.css'
+import {randomId, validateName,validateId, getFolderName} from '../../service/functions'
+import './forms.css'
 
 class AddNote extends React.Component {
     constructor (props) {
