@@ -6,6 +6,7 @@ import {NotefulApiServices} from '../service/api-service'
 
 //Main Components
 import NoteList from '../Components/NoteList/NoteList'
+import NoteDetails from '../Components/NoteDetails/NoteDetails'
 //import NoteContent from '../NoteContent/NoteContent'
 import AddFolder from '../Components/Forms/AddFolder'
 import AddNote from '../Components/Forms/AddNote'
@@ -32,32 +33,40 @@ class App extends Component {
   findNote=(id)=>{
     return this.state.notes.find(note=>note.id===id)
   }
-  onAddFolderSuccess=()=>{
+  onUpdateSuccess=()=>{
     NotefulApiServices.getAllItems('folders')
       .then(json=>this.setState({folders:json}))
+      .then(()=>{
+        NotefulApiServices.getAllItems('notes')
+        .then(json=>this.setState({notes:json}))
+      }) 
   }
 
   render () {
     const {notes,folders}= this.state
     const value = { notes: notes,folders: folders,}
-    const notelist= ()=><NoteList notes={notes} folders={folders}/>
+    const notelist= ()=><NoteList notes={notes} folders={folders} onSuccess={this.onUpdateSuccess}/>
     return (
       <NoteContext.Provider value={value}>
         <div className="App">
           <nav>
             <h1><Link to='/' className='home'>Noteful</Link></h1>
             <div>
-              <Link to={`/forms/folder`} className='route'>Add new folder</Link> 
-              <Link to={`/forms/note`} className='route'>Add new note</Link> 
+              <Link to={`/forms/folders`} className='route'>Add new folder</Link> 
+              <Link to={`/forms/notes`} className='route'>Add new note</Link> 
             </div>
           </nav> 
           {this.state.error.length!==0 && <div className='promiseError'>{this.state.error}</div>}
           <Switch>
             <Route exact path='/' component={notelist} />
-            <Route path='/forms/folder' component={(props)=><AddFolder
-                {...props} onSuccess={this.onAddFolderSuccess}
-            />}/>   
-            <Route path='/forms/note' component={AddNote}/>
+            <Route path='/notes/:id' component={NoteDetails} />
+            <Route path='/forms/folders' component={(props)=><AddFolder
+                {...props} onSuccess={this.onUpdateSuccess}
+            />}/>  
+            <Route path='/forms/notes' component={(props)=><AddNote
+                {...props} onSuccess={this.onUpdateSuccess}
+            />}/>  
+            
             <Route component={NotFoundPage} />
           </Switch>  
         </div>
@@ -68,6 +77,9 @@ class App extends Component {
 
 export default App;
 /*
+<Route path='/forms/folders/:id' component={(props)=><AddFolder
+                {...props} onSuccess={this.onUpdateFolderSuccess}
+            />}/>
 <main>
 <Route exact path='/' component={Lists} />   
             <Route path='/folder/:folderId' component={Lists} /> 

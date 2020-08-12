@@ -11,7 +11,9 @@ export default class NoteList extends Component {
     static defaultProps={
         match: {params:{}},
         notes: [],
-        folders:[]
+        folders:[],
+        onSuccess: ()=>{},
+        location:{pathname:''}
     }
     state= {
         title: 'All Notes',
@@ -19,6 +21,11 @@ export default class NoteList extends Component {
         folders:this.props.folders, 
         displayNav: false,
     }
+    /*
+    id= this.props.location.pathname.split('/')
+    componentDidMount(){
+        console.log(this.id)
+    }*/
     /*
     componentDidMount(){
         NotefulApiServices.getAllItems('folders').then(json=>this.setState({folders:json}))
@@ -34,6 +41,10 @@ export default class NoteList extends Component {
             const notes= json.filter(note=>note.folderid===id)
             this.setState({notes: notes, title: folder.name, displayNav: false})
         })
+    }
+    deleteFolder=(id)=>{
+        NotefulApiServices.deleteItemById('folders',id)
+            .then(()=>this.props.onSuccess()).catch(err=>console.log(err))
     }
     displayAll=()=>{
         NotefulApiServices.getAllItems('notes').then(json=>{
@@ -69,12 +80,17 @@ export default class NoteList extends Component {
         </div>
         )
     }
-    
+
+    deleteItem=(name,id)=>{
+        NotefulApiServices.deleteItemById(name,id)
+            .then(()=>this.props.onSuccess()).catch(err=>console.log(err))
+    }
     renderNotes(){
         const {notes}= this.state
         return(
             <div className='noteList'>
-                {notes.map((note,index)=><NoteBox {...this.props} key={index} note={note}/>)}
+                {notes.map((note,index)=><NoteBox {...this.props} deleteNote={this.deleteItem}
+                key={index} note={note}/>)}
             </div>
         )
     }
@@ -86,7 +102,7 @@ export default class NoteList extends Component {
                 {nav}
                 <div className='main'>
                     {this.state.displayNav && 
-                        <FolderList displayAll={this.displayAll}
+                        <FolderList displayAll={this.displayAll} deleteFolder={this.deleteItem}
                         folders={this.state.folders} openFolder={this.openFolder}/>}
                     {notes}
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
-//import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faFolderOpen, faEdit, faTrash,} from '@fortawesome/free-solid-svg-icons'
+import {faEdit, faTrash,} from '@fortawesome/free-solid-svg-icons'
 import './utils.css'
 
 export function FolderList(props){
@@ -15,8 +15,11 @@ export function FolderList(props){
             {folders.map(folder=>
             <div className='folderBox' key={folder.id}>
               <span className='folderName' onClick={()=>props.openFolder(folder.id)} >{folder.name}</span>
-              <FontAwesomeIcon icon={faTrash} className='icon'
-              onClick={()=>props.deleteFolder(folder.id)}/>
+              <div>
+                <Link to={`/forms/folders/${folder.id}`}><FontAwesomeIcon icon={faEdit} className='icon'/></Link>
+                <FontAwesomeIcon icon={faTrash} className='icon'
+                onClick={()=>props.deleteFolder('folders',folder.id)}/>
+              </div>
             </div>)}
         </div>
     )
@@ -25,17 +28,17 @@ export function FolderList(props){
 export function NoteBox(props={}){
     const {note}= props
     const d= new Date(note.modified).toDateString()
-    const icons=[
-        {name: faFolderOpen, method:()=>props.history.push(`/note/${note.id}`)},
-        {name:faEdit, method:()=>props.history.push(`/updateNote/${note.id}`)},
-        {name: faTrash, method:()=>props.deleteNote(note.id)},
-    ]
-    const buttons= ControlButtons(icons)
     return (
         <div className='noteBox'>
             <div className='noteNav'>
-                <h3> {note.name} </h3>
-                {buttons} 
+                <h3> 
+                    <Link to={`/notes/${note.id}`}>{note.name} </Link>
+                </h3>
+                <div>
+                    <Link to={`/forms/notes/${note.id}`}><FontAwesomeIcon icon={faEdit} className='icon'/></Link>
+                    <FontAwesomeIcon icon={faTrash} className='icon'
+                    onClick={()=>props.deleteNote('notes',note.id)}/>
+                </div>
             </div>
             <div className='noteFooter'>
                 Modified on {d}
@@ -77,3 +80,11 @@ function NoteButtons(props={}){
         </div>
     )
 }*/
+
+/*
+    const icons=[
+        {name: faFolderOpen, method:()=>props.history.push(`/note/${note.id}`)},
+        {name:faEdit, method:()=>props.history.push(`/forms/notes/${note.id}`)},
+        {name: faTrash, method:()=>props.deleteNote('notes',note.id)},
+    ]
+*/

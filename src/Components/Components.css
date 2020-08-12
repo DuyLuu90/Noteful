@@ -45,6 +45,10 @@ header{
     width: 60%;
     margin: 25px auto;
 }
+.note_details{
+    width: 75%;
+    margin: 10px auto;
+}
 .errorMessage {
     color: red;
     font-weight: bold;

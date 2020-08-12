@@ -1,39 +1,69 @@
 import React from 'react';
-//import ValidationError from './ValidationError'
-import {ValidationError} from '../Utils/utils'
 import NoteContext from '../../Context/NoteContext';
 import PropTypes from 'prop-types'
-import {randomId, validateName,validateId, getFolderName} from '../../service/functions'
+//import {validateNote} from '../../service/functions'
 import './forms.css'
+import {NotefulApiServices} from '../../service/api-service'
 
 class AddNote extends React.Component {
     constructor (props) {
         super(props)
         this.notes=[]
+        this.id= Number(this.props.location.pathname.split('/')[3])
         this.state= {
-            id: {value:this.props.note.id, touch:false},
-            name: {value:this.props.note.name, touch:false},
-            modified: new Date().toLocaleString(),
-            folderId:this.props.note.folderId,
-            content: this.props.note.content,
+            folderid:{value:'', touch:false},
+            name: {value:'', touch:false},
+            content: {value:'', touch:false},
             statusMessage: false
         }
     }
     static defaultProps= {
-        note: {id:'',name:'',content:'', folderId:''},
+        history: {},
+        match: {params:{}},
+        location: {pathname:''},
     }
-    updateName(name) {
-        this.setState({name:{value:name,touch:true}})
+    componentDidMount(){
+        if(this.id) {
+            NotefulApiServices.getItemById('notes',this.id)
+            .then(json=>this.setState({
+                folderid: {...this.state.folderid, value:json.folderid},
+                name: {...this.state.name, value: json.name},
+                content: {...this.state.content, value: json.content}
+            }))
+        }
     }
-    updateId= (id) =>{
-        this.setState({id:{value:id,touch:true}})
+    onChange= e=>{
+        const key= e.target.name;
+        const newValue= e.target.value;
+        this.setState({[key]:{value: newValue,touched:true}, statusMessage:false})
     }
-    updateFolderId(folderId) {  
-        this.setState({folderId})
+    handleSubmit= e=>{
+        e.preventDefault()
+        const {folderid,name,content}= e.target
+        const data= {
+            folderid: folderid.value,
+            name: name.value,
+            content: content.value
+        }
+        const {id}= this
+        if (id) {
+            NotefulApiServices.patchItemById('notes',Number(id),data)
+                .then(()=>{
+                    console.log(name.value)
+                    this.props.onSuccess()
+                    this.props.history.push('/')
+                }).catch(err=>console.log(err))
+        }
+        else {
+            NotefulApiServices.postItem('notes',data)
+            .then(folder=>{
+                name.value=''
+                //this.reset()
+                this.setState({statusMessage:true})
+                this.props.onSuccess()
+            })
+        }  
     }
-    updateContent(content) {
-        this.setState({content})
-    } 
     
     reset=()=> {
         const id= this.state.id
@@ -48,79 +78,43 @@ class AddNote extends React.Component {
         this.setState({statusMessage: false})
     }
     render() {
+        const {folderid,name,content}= this.state
         return (
         <NoteContext.Consumer>
             {value=>{
-            this.notes= value.notes;
-            const nameError= validateName(this.notes,this.props.note.name,this.state.name.value)
-            const idError=validateId(this.notes,this.props.note.id,this.state.id.value)
-            const note = {
-                id: this.state.id.value,
-                name: this.state.name.value,
-                modified: this.state.modified,
-                content: this.state.content, 
-                folderId: this.state.folderId}
+            //const nameError= validateNote(value.notes,name.value,folderid.value)
             return(
-            <form>
+            <form onSubmit={this.handleSubmit}>
                 <h3>Add/Update note</h3>
                 <div className='form_data'>
-                    <label htmlFor='folderSelection'>Select a folder: </label>
-                    <select name='folderSelection' id='folderSelection'
-                    onClick={this.hideStatusMessage}
-                    onChange={e=>this.updateFolderId(e.target.value)}>
-                        <optgroup label='Default'>
-                            <option value={this.state.folderId}>
-                                {getFolderName(value.folders,this.state.folderId) }
-                            </option>
-                        </optgroup>
-                        <optgroup label='All folders'>
-                            {value.folders.map(folderSelection=>(
-                            <option value={folderSelection.id} key={folderSelection.id}>
-                                {folderSelection.name}
-                            </option>))}
-                        </optgroup>  
+                    <label htmlFor='folderid'>Select a folder: </label>
+                    <select name='folderid' id='folderid' value={folderid.value} onChange={this.onChange}>
+                        <option value=''></option>
+                        {value.folders.map(folder=>(
+                        <option value={folder.id} key={folder.id}>
+                            {folder.name}
+                        </option>))} 
                     </select>   
                 </div>
                 <div className='form_data'>
-                    <label htmlFor="noteName">Name: </label>
-                    <input type="text" name="noteName" id="noteName" value={this.state.name.value}
-                    onClick={this.hideStatusMessage}
-                    onChange={e=>this.updateName(e.target.value)}/>
+                    <label htmlFor="name">Name: </label>
+                    <input type="text" name="name" id="name" value={name.value}
+                    onChange={this.onChange}/>
                 </div>
-                {this.state.name.touch && <ValidationError message={nameError} />
-                }
+                
                 <div className='form_data'>
-                    <label htmlFor="noteContent">Content: </label>
-                    <textarea type="text" name="noteContent" id="noteContent" value={this.state.content}
-                    onClick={this.hideStatusMessage}
-                    onChange={e=>this.updateContent(e.target.value)}/>
+                    <label htmlFor="content">Content: </label>
+                    <textarea type="text" name="content" id="content" value={content.value}
+                    onChange={this.onChange}/>
                 </div>
-                <div className='form_data'>
-                    <label htmlFor="noteId">ID: </label>
-                    <input type="text" name="noteId" id="noteId" value={this.state.id.value}
-                    onClick={this.hideStatusMessage}
-                    disabled={this.props.note.id}
-                    onChange={e=>this.updateId(e.target.value)}/>
-                </div>
-                {this.state.id.touch && (
-                <ValidationError message={idError} />)
-                }
+        
                 {this.state.statusMessage && <div style={{color:'red'}}>Your entries've been saved. You can add more items or go back!</div>}
                 <div className='form_control'>
                     <input type='button' value='Back'
                         onClick={()=>this.props.history.goBack()}/>
-                    <input type='button' value='Generate random ID'
-                        onClick={()=>this.updateId(randomId())}/>
-
-                    <input type='button' className='save' value='Save'
+                    <input type='submit' className='save' value='Save'
                         disabled={
-                            (nameError)||(idError)||
-                            (!this.state.content)||(!this.state.folderId)}
-                        onClick={()=>{
-                            const id= this.props.note.id;
-                            if (id.length !==0) value.modifyNote(id, note)  
-                            else value.updateNote(note);
-                            this.reset() ; }}/>
+                            (!this.state.content)||(!this.state.folderid)}/>
                 </div>   
             </form>)}}
         </NoteContext.Consumer> )
@@ -139,3 +133,6 @@ AddNote.propTypes = {
 
 export default AddNote;
 
+/*
+{this.state.name.touch && <div className="error">{nameError}</div>}
+ */
