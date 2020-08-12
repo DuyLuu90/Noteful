@@ -61,7 +61,7 @@ export default class NoteList extends Component {
                     <span><FontAwesomeIcon icon={faBars} onClick={this.displayNav}/></span>
                     <span className='count'>{this.state.folders.length}</span>
                     <span className='add'>
-                        <Link to={`/forms/folder`} ><FontAwesomeIcon icon={faPlus}/></Link>
+                        <Link to={`/forms/folders`} ><FontAwesomeIcon icon={faPlus}/></Link>
                     </span>
                 </div>
                 <span className='mainNav_title'>{this.state.title}</span>
@@ -71,7 +71,7 @@ export default class NoteList extends Component {
                 <div className='mainNav_control'>
                     <span className='count'>{this.state.notes.length}</span>
                     <span className='add'>
-                        <Link to={`/forms/note`} className='add'>
+                        <Link to={`/forms/notes`} className='add'>
                             <FontAwesomeIcon icon={faPlus}/>
                         </Link>
                     </span>
