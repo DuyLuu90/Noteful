@@ -24,10 +24,10 @@ class App extends Component {
   componentDidMount() {
     NotefulApiServices.getAllItems('folders')
       .then(json=>this.setState({folders:json}))
-      .catch(err=>this.setState({error:err}))
+      .catch(res=> this.setState({error:res.error}))
     NotefulApiServices.getAllItems('notes')
       .then(json=>this.setState({notes:json}))
-      .catch(err=>this.setState({error:err}))
+      .catch(res=> this.setState({error:res.error}))
   }
   
   findNote=(id)=>{
@@ -43,9 +43,10 @@ class App extends Component {
   }
 
   render () {
-    const {notes,folders}= this.state
+    const {notes,folders,error}= this.state
     const value = { notes: notes,folders: folders,}
     const notelist= ()=><NoteList notes={notes} folders={folders} onSuccess={this.onUpdateSuccess}/>
+    
     return (
       <NoteContext.Provider value={value}>
         <div className="App">
@@ -56,7 +57,6 @@ class App extends Component {
               <Link to={`/forms/notes`} className='route'>Add new note</Link> 
             </div>
           </nav> 
-          {this.state.error.length!==0 && <div className='promiseError'>{this.state.error}</div>}
           <Switch>
             <Route exact path='/' component={notelist} />
             <Route path='/notes/:id' component={NoteDetails} />
@@ -69,6 +69,7 @@ class App extends Component {
             
             <Route component={NotFoundPage} />
           </Switch>  
+          {this.state.error && <div className='promiseError'>{error}</div>}
         </div>
       </NoteContext.Provider>
     );
