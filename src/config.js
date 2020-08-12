@@ -5,4 +5,4 @@ export default {
     API_TOKEN: process.env.REACT_APP_API_TOKEN 
 }
 
-console.log(process.env.REACT_APP_API_TOKEN)
+console.log(process.env)
