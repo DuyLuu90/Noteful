@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom';
+import {Route, Switch, Link} from 'react-router-dom';
 import './App.css';
-import NoteContext from '../NoteContext';
+import NoteContext from '../Context/NoteContext';
+import {NotefulApiServices} from '../service/api-service'
 
 //Main Components
-import Lists from '../Lists/Lists'
-import NoteContent from '../NoteContent/NoteContent'
-//Form Components
-import AddFolder from '../Forms/AddFolderForm/AddFolder'
-import AddNote from '../Forms/AddNoteForm/AddNote'
-
+import NoteList from '../Components/NoteList/NoteList'
+import NoteDetails from '../Components/NoteDetails/NoteDetails'
+//import NoteContent from '../NoteContent/NoteContent'
+import AddFolder from '../Components/Forms/AddFolder'
+import AddNote from '../Components/Forms/AddNote'
+import NotFoundPage from '../Components/NotFoundPage/NotFoundPage'
 
 class App extends Component {
   constructor(props) {
@@ -17,115 +18,57 @@ class App extends Component {
     this.state= {
       notes: [],
       folders: [],
-      //folders: [{name:'',id:''}] ,
       error: ''
     }
   }
   componentDidMount() {
-    const url= 'http://localhost:9090'
-    fetch(`${url}/folders`)
-    .then(resp=>{
-      console.log(resp)
-      if (!resp.ok) throw new Error()
-      else return resp.json()})
-    .then(json=>{
-      console.log(json)
-      this.setState({folders:json})})
-    .catch(error=>{
-      console.log(error);
-      this.setState({error: 'Something went wrong with the server. Please check again later!'})})
-
-    fetch(`${url}/notes`)
-    .then(resp=>{
-      if (!resp.ok) throw new Error()
-      else return resp.json()})
-    .then(json=>this.setState({notes:json}))
-    .catch(error=>{
-      console.log(error);
-      this.setState({error: 'Something went wrong with the server. Please check again later!'})})
+    NotefulApiServices.getAllItems('folders')
+      .then(json=>this.setState({folders:json}))
+      .catch(err=>this.setState({error:err}))
+    NotefulApiServices.getAllItems('notes')
+      .then(json=>this.setState({notes:json}))
+      .catch(err=>this.setState({error:err}))
   }
-  /*
-addFolder = (obj) => {
-  const url= 'http://localhost:9090'
-  fetch(`${url}/folders`, {
-    method: 'POST', 
-    body: JSON.stringify(obj)
-  })}*/
-
-  deleteFolder = folderId => {
-    console.log('Folder',folderId, 'has been deleted')
-    this.setState({
-      folders: this.state.folders.filter(folder=>folder.id !== folderId),
-      notes: this.state.notes.filter(note=>note.folderId !== folderId)
-    })
-  }
-  deleteNote = noteId => {
-    console.log('Note',noteId, 'has been deleted')
-    this.setState({
-      notes: this.state.notes.filter(note=>note.id !== noteId)
-    })
-  }
-  updateFolder= folder=> {
-    const newFolders= [...this.state.folders, folder]
-    this.setState({folders: newFolders})
-  }
-  modifyNote=(id,newNote) => {
-    /*
-    const index= this.state.notes.findIndex(note=>note.id===id)
-    const newNotes = this.state.notes.slice(0,index)
-    const newNote1= this.state.notes.slice(index+1)
-    const newNotes1= [...newNotes, newNote,...newNote1]
-    */
-    const newNotes=this.state.notes.map(note=>{
-      if (note.id===id) note=newNote
-      return note})
-    this.setState({notes: newNotes})  
-  }
-  updateNote=(note) =>{
-    const newNotes= [...this.state.notes, note]
-    this.setState({notes: newNotes})  
-  }
+  
   findNote=(id)=>{
     return this.state.notes.find(note=>note.id===id)
   }
+  onUpdateSuccess=()=>{
+    NotefulApiServices.getAllItems('folders')
+      .then(json=>this.setState({folders:json}))
+      .then(()=>{
+        NotefulApiServices.getAllItems('notes')
+        .then(json=>this.setState({notes:json}))
+      }) 
+  }
 
   render () {
-    const value = {
-      notes: this.state.notes,
-      folders: this.state.folders,
-      deleteFolder: this.deleteFolder,
-      deleteNote: this.deleteNote,
-      updateFolder: this.updateFolder,
-      updateNote: this.updateNote,
-      modifyNote: this.modifyNote,
-    }
-    
+    const {notes,folders}= this.state
+    const value = { notes: notes,folders: folders,}
+    const notelist= ()=><NoteList notes={notes} folders={folders} onSuccess={this.onUpdateSuccess}/>
     return (
       <NoteContext.Provider value={value}>
         <div className="App">
           <nav>
-            <Link to='/' className='home'>Noteful</Link>
+            <h1><Link to='/' className='home'>Noteful</Link></h1>
             <div>
-              <Link to={`/updateFolder`} className='route'>Add new folder</Link> 
-              <Link to={`/updateNote`} className='route'>Add new note</Link> 
+              <Link to={`/forms/folders`} className='route'>Add new folder</Link> 
+              <Link to={`/forms/notes`} className='route'>Add new note</Link> 
             </div>
           </nav> 
-
-          <main>
-            
-            <Route exact path='/' component={Lists} />   
-            <Route path='/folder/:folderId' component={Lists} /> 
-            <Route path='/note/:noteId' component={NoteContent} /> 
-
-            <Route path='/updateFolder' component={AddFolder} />  
-            <Route exact path='/updateNote' component={AddNote} />  
-            <Route path='/updateNote/:noteId' component={(props)=>{
-                const note= this.findNote(props.match.params.noteId)
-                return <AddNote history={props.history} note={note} />}} />
-          </main> 
-
           {this.state.error.length!==0 && <div className='promiseError'>{this.state.error}</div>}
+          <Switch>
+            <Route exact path='/' component={notelist} />
+            <Route path='/notes/:id' component={NoteDetails} />
+            <Route path='/forms/folders' component={(props)=><AddFolder
+                {...props} onSuccess={this.onUpdateSuccess}
+            />}/>  
+            <Route path='/forms/notes' component={(props)=><AddNote
+                {...props} onSuccess={this.onUpdateSuccess}
+            />}/>  
             
+            <Route component={NotFoundPage} />
+          </Switch>  
         </div>
       </NoteContext.Provider>
     );
@@ -133,3 +76,16 @@ addFolder = (obj) => {
 }
 
 export default App;
+/*
+<Route path='/forms/folders/:id' component={(props)=><AddFolder
+                {...props} onSuccess={this.onUpdateFolderSuccess}
+            />}/>
+<main>
+<Route exact path='/' component={Lists} />   
+            <Route path='/folder/:folderId' component={Lists} /> 
+            <Route path='/note/:noteId' component={NoteContent} />  
+            <Route path='/updateNote/:noteId' component={(props)=>{
+                const note= this.findNote(props.match.params.noteId)
+                return <AddNote history={props.history} note={note} />}} />
+</main>
+ */
