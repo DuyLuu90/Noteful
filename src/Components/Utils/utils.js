@@ -16,7 +16,9 @@ export function FolderList(props){
             <div className='folderBox' key={folder.id}>
               <span className='folderName' onClick={()=>props.openFolder(folder.id)} >{folder.name}</span>
               <div>
-                <Link to={`/forms/folders/${folder.id}`}><FontAwesomeIcon icon={faEdit} className='icon'/></Link>
+                <Link to={`/forms/folders/${folder.id}`}aria-label="edit-form">
+                    <FontAwesomeIcon icon={faEdit} className='icon'/>
+                </Link>
                 <FontAwesomeIcon icon={faTrash} className='icon'
                 onClick={()=>props.deleteFolder('folders',folder.id)}/>
               </div>
@@ -31,11 +33,15 @@ export function NoteBox(props={}){
     return (
         <div className='noteBox'>
             <div className='noteNav'>
-                <h3> 
-                    <Link to={`/notes/${note.id}`}>{note.name} </Link>
-                </h3>
+                <div className='note_title'> 
+                    <Link to={`/notes/${note.id}`} aria-label="note-details">
+                        {note.name} 
+                    </Link>
+                </div>
                 <div>
-                    <Link to={`/forms/notes/${note.id}`}><FontAwesomeIcon icon={faEdit} className='icon'/></Link>
+                    <Link to={`/forms/notes/${note.id}`} aria-label="edit-note">
+                        <FontAwesomeIcon icon={faEdit} className='icon'/>
+                    </Link>
                     <FontAwesomeIcon icon={faTrash} className='icon'
                     onClick={()=>props.deleteNote('notes',note.id)}/>
                 </div>

@@ -29,7 +29,9 @@ header{
     cursor: pointer;
 }
 .count {
-    background-color: red;
+    background-color: rgb(109, 169, 218);
+    color: black;
+    font-weight: bolder;
 }
 .add {
     background-color: orange; 

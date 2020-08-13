@@ -4,5 +4,3 @@ export default {
                 : 'http://localhost:9000/api',
     API_TOKEN: process.env.REACT_APP_API_TOKEN 
 }
-
-console.log(process.env)

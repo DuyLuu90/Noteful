@@ -53,8 +53,12 @@ class App extends Component {
           <nav>
             <h1><Link to='/' className='home'>Noteful</Link></h1>
             <div>
-              <Link to={`/forms/folders`} className='route'>Add new folder</Link> 
-              <Link to={`/forms/notes`} className='route'>Add new note</Link> 
+              <Link to={`/forms/folders`} className='route'aria-label="form">
+                Add new folder
+              </Link> 
+              <Link to={`/forms/notes`} className='route'aria-label="form">
+                Add new note
+              </Link> 
             </div>
           </nav> 
           <Switch>
