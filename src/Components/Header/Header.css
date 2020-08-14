@@ -1,0 +1,45 @@
+.app_menu {
+    display: none;
+}
+
+.dropdown svg {
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.dropdown div {
+    display: flex; flex-direction: column;
+    position: fixed; top: 70px; right:10px;
+    z-index: 5;
+}
+.dropdown div a {
+    background-color: rgb(207, 207, 223);
+    font-size: 15px;  margin: 0;
+    text-align: center; font-weight: bolder;
+    width: 120px; padding: 5px; border-bottom: solid; border-width: thin;
+}
+.dropdown a:hover {
+    background-color: rgb(171, 235, 108);
+}
+@media screen and (min-width: 600px) {
+    .app_menu {
+        display: flex;
+    }
+    .route {
+        text-align: center;
+        padding: 10px;
+        background-color: orange;
+        font-weight: bold;
+        width: 150px;
+        margin-left: 20px;
+      }
+    .route:hover {
+        background-color: rgb(171, 235, 108);
+        cursor: pointer;
+    }
+
+    .dropdown {
+        display: none;
+    }
+}

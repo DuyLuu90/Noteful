@@ -56,7 +56,7 @@ export default class NoteList extends Component {
     renderNav(){
         return(
         <div className='mainNav'>
-            <div>
+            <div id='nav_folder'>
                 <div className='mainNav_control'>
                     <span><FontAwesomeIcon icon={faBars} onClick={this.displayNav}/></span>
                     <span className='count'>{this.state.folders.length}</span>
@@ -68,7 +68,7 @@ export default class NoteList extends Component {
                 </div>
                 <span className='mainNav_title'>{this.state.title}</span>
             </div>
-            <div>
+            <div id='nav_note'>
                 <span className='mainNav_title'>Total:</span>
                 <div className='mainNav_control'>
                     <span className='count'>{this.state.notes.length}</span>

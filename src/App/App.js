@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Route, Switch, Link} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import './App.css';
 import NoteContext from '../Context/NoteContext';
 import {NotefulApiServices} from '../service/api-service'
 
 //Main Components
+import Header from '../Components/Header/Header'
 import NoteList from '../Components/NoteList/NoteList'
 import NoteDetails from '../Components/NoteDetails/NoteDetails'
 //import NoteContent from '../NoteContent/NoteContent'
@@ -50,17 +51,7 @@ class App extends Component {
     return (
       <NoteContext.Provider value={value}>
         <div className="App">
-          <nav>
-            <h1><Link to='/' className='home'>Noteful</Link></h1>
-            <div>
-              <Link to={`/forms/folders`} className='route'aria-label="form">
-                Add new folder
-              </Link> 
-              <Link to={`/forms/notes`} className='route'aria-label="form">
-                Add new note
-              </Link> 
-            </div>
-          </nav> 
+          <Header />
           <Switch>
             <Route exact path='/' component={notelist} />
             <Route path='/notes/:id' component={NoteDetails} />

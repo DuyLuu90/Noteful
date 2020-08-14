@@ -20,6 +20,9 @@ header{
 .mainNav div {
     display: flex;
 }
+#nav_note{
+    display: none;
+}
 .mainNav_title {
     margin: 0px 10px;
 }
@@ -54,6 +57,12 @@ header{
 .errorMessage {
     color: red;
     font-weight: bold;
+}
+
+@media screen and (min-width: 600px) {
+    #nav_note{
+        display: flex;
+    }
 }
 /*
 .folder_list {

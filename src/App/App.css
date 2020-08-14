@@ -19,23 +19,11 @@ nav h1 {
   margin: 0px;
 }
 .home {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
 }
 .home:hover {
   color: yellow;
-}
-.route {
-  text-align: center;
-  padding: 10px;
-  background-color: orange;
-  font-weight: bold;
-  width: 200px;
-  margin-left: 20px;
-}
-.route:hover {
-  background-color: rgb(171, 235, 108);
-  cursor: pointer;
 }
 
 .main {
