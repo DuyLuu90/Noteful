@@ -48,19 +48,10 @@ class AddFolder extends React.Component {
             NotefulApiServices.postItem('folders',data)
             .then(folder=>{
                 name.value=''
-                //this.reset()
                 this.setState({statusMessage:true})
-                this.props.onSuccess()
             })
         }  
     }
-    reset=()=> {
-        this.setState({
-            name: {value:'',touched:false},
-            statusMessage: true,})
-    }
-
-    hideStatusMessage=()=> this.setState({statusMessage: false})
     
     render() {
         return (
@@ -84,7 +75,9 @@ class AddFolder extends React.Component {
             
             <div className='form_control'>
                 <input type='button' value='Back'
-                    onClick={()=>this.props.history.goBack()}/>
+                    onClick={()=>{
+                        this.props.onSuccess()
+                        this.props.history.goBack()}}/>
                 <input type='submit' className='save' value='Save'
                     disabled={(nameError)}/>
             </div>    

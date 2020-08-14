@@ -49,7 +49,6 @@ class AddNote extends React.Component {
         if (id) {
             NotefulApiServices.patchItemById('notes',Number(id),data)
                 .then(()=>{
-                    console.log(name.value)
                     this.props.onSuccess()
                     this.props.history.push('/')
                 }).catch(err=>console.log(err))
@@ -58,13 +57,12 @@ class AddNote extends React.Component {
             NotefulApiServices.postItem('notes',data)
             .then(folder=>{
                 name.value=''
-                //this.reset()
                 this.setState({statusMessage:true})
-                this.props.onSuccess()
+                //this.props.onSuccess()
             })
         }  
     }
-    
+    /*
     reset=()=> {
         const id= this.state.id
         const name=this.state.name
@@ -73,10 +71,8 @@ class AddNote extends React.Component {
             name: {...name, touch: false},
             statusMessage:true
         }) 
-    }
-    hideStatusMessage=()=> {
-        this.setState({statusMessage: false})
-    }
+    }*/
+    
     render() {
         const {folderid,name,content}= this.state
         return (
@@ -111,7 +107,9 @@ class AddNote extends React.Component {
                 {this.state.statusMessage && <div style={{color:'red'}}>Your entries've been saved. You can add more items or go back!</div>}
                 <div className='form_control'>
                     <input type='button' value='Back'
-                        onClick={()=>this.props.history.goBack()}/>
+                        onClick={()=>{
+                            this.props.onSuccess()
+                            this.props.history.goBack()}}/>
                     <input type='submit' className='save' value='Save'
                         disabled={
                             (!this.state.content)||(!this.state.folderid)}/>
