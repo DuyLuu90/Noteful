@@ -40,7 +40,6 @@ class AddFolder extends React.Component {
         if (id) {
             NotefulApiServices.patchItemById('folders',Number(id),data)
                 .then(()=>{
-                    console.log(name.value)
                     this.props.onSuccess()
                     this.props.history.push('/')
                 }).catch(err=>console.log(err))
