@@ -19,7 +19,7 @@ export default function NoteDetails(props) {
                         </h3>
                         <div className='note_details'>
                             <ErrorBoundary>
-                                {note.name && <NoteBox note={note}/>}
+                                {note.name && <NoteBox note={note} deleteNote={value.deleteItem}/>}
                                 <div className='content'>
                                     {(note.content===errorMessage)
                                     ?<div style={{color:'red'}}>{errorMessage}</div>

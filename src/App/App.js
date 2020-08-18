@@ -30,10 +30,10 @@ class App extends Component {
       .then(json=>this.setState({notes:json}))
       .catch(res=> this.setState({error:res.error}))
   }
-  
-  findNote=(id)=>{
-    return this.state.notes.find(note=>note.id===id)
-  }
+  deleteItem=(name,id)=>{
+    NotefulApiServices.deleteItemById(name,id)
+        .then(()=>this.onUpdateSuccess()).catch(err=>console.log(err))
+}
   onUpdateSuccess=()=>{
     NotefulApiServices.getAllItems('folders')
       .then(json=>this.setState({folders:json}))
@@ -45,7 +45,10 @@ class App extends Component {
 
   render () {
     const {notes,folders,error}= this.state
-    const value = { notes: notes,folders: folders,}
+    const value = { 
+      deleteItem: this.deleteItem,
+      notes: notes,
+      folders: folders,}
     const notelist= ()=><NoteList notes={notes} folders={folders} onSuccess={this.onUpdateSuccess}/>
     
     return (
